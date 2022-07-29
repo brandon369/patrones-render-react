@@ -13,6 +13,7 @@ import {TodoForm} from '../TodoForm';
 import {CreateTodoButton} from '../CreateTodoButton';
 import {Modal} from '../Modal';
 import TodoHeader from "../todoHeader";
+import EmptySearchResults from "../EmptySearchResults";
 
 
 function App() {
@@ -36,25 +37,43 @@ function App() {
 
   return (
     <React.Fragment>
-      <TodoHeader>
+      <TodoHeader loading={loading}>
         <TodoCounter
           totalTodos={totalTodos}
           completedTodos={completedTodos}
+          // loading={loading}
         />
         <TodoSearch
           searchValue={searchValue}
           setSearchValue={setSearchValue}
+          // loading={loading}
         />
 
       </TodoHeader>
 
+      {/*render Props*/}
+      <TodoList
+        error={error}
+        loading={loading}
+        searchedTodos={searchedTodos}
+        totalTodos={totalTodos}
+        searchValue={searchValue}
+        onError={() => <TodosError/>}
+        onLoading={() => <TodosLoading/>}
+        onEmptyTodos={() => <EmptyTodos/>}
+        onEmptySearchResults={(searchText) => <EmptySearchResults searchText={searchText}/>}
+        // render={todo => (
+        //   <TodoItem
+        //     key={todo.text}
+        //     text={todo.text}
+        //     completed={todo.completed}
+        //     onComplete={() => completeTodo(todo.text)}
+        //     onDelete={() => deleteTodo(todo.text)}
+        //   />
+        // )}
 
-      <TodoList>
-        {error && <TodosError/>}
-        {loading && <TodosLoading/>}
-        {(!loading && !searchedTodos.length) && <EmptyTodos/>}
-
-        {searchedTodos.map(todo => (
+      >
+        {todo => (
           <TodoItem
             key={todo.text}
             text={todo.text}
@@ -62,8 +81,26 @@ function App() {
             onComplete={() => completeTodo(todo.text)}
             onDelete={() => deleteTodo(todo.text)}
           />
-        ))}
+        )}
+
       </TodoList>
+
+
+      {/*<TodoList>*/}
+      {/*  {error && <TodosError/>}*/}
+      {/*  {loading && <TodosLoading/>}*/}
+      {/*  {(!loading && !searchedTodos.length) && <EmptyTodos/>}*/}
+
+      {/*  {searchedTodos.map(todo => (*/}
+      {/*    <TodoItem*/}
+      {/*      key={todo.text}*/}
+      {/*      text={todo.text}*/}
+      {/*      completed={todo.completed}*/}
+      {/*      onComplete={() => completeTodo(todo.text)}*/}
+      {/*      onDelete={() => deleteTodo(todo.text)}*/}
+      {/*    />*/}
+      {/*  ))}*/}
+      {/*</TodoList>*/}
 
       {!!openModal && (
         <Modal>
